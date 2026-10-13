@@ -1,0 +1,16 @@
+node_modules/
+dist/
+coverage/
+*.log
+.DS_Store
+Thumbs.db
+
+# 環境ごとの設定（コミットしない）
+.env
+.env.*
+!.env.example
+
+# エディタ
+.vscode/*
+!.vscode/extensions.json
+.idea/

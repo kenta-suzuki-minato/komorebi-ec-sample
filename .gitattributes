@@ -1,0 +1,6 @@
+* text=auto eol=lf
+*.ps1 text eol=crlf
+*.xlsx binary
+*.png binary
+# 倉庫向けの出荷指示サンプルは Shift_JIS / CRLF のまま保存する
+*.sjis.csv binary

@@ -1,0 +1,15 @@
+# ローカル開発用の PostgreSQL 16。接続情報は .env（.env.example をコピー）
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: ${DB_NAME:-komorebi}
+      POSTGRES_USER: ${DB_USER:-komorebi}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-change-me}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:

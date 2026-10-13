@@ -1,0 +1,11 @@
+{
+  "name": "@komorebi/batch",
+  "version": "0.4.0",
+  "private": true,
+  "type": "module",
+  "description": "定時実行バッチ（ポイント有効期限、出荷指示データ出力）",
+  "dependencies": {
+    "@komorebi/domain": "workspace:*",
+    "iconv-lite": "0.6.3"
+  }
+}

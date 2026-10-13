@@ -1,0 +1,10 @@
+{
+  "name": "@komorebi/web",
+  "version": "0.4.0",
+  "private": true,
+  "type": "module",
+  "description": "こもれびストア Webフロント（商品ページ・カート・購入手続き）",
+  "dependencies": {
+    "@komorebi/domain": "workspace:*"
+  }
+}

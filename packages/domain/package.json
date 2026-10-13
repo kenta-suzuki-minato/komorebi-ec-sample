@@ -1,0 +1,10 @@
+{
+  "name": "@komorebi/domain",
+  "version": "0.4.0",
+  "private": true,
+  "type": "module",
+  "description": "金額・消費税・ポイント・のし・住所の業務ルール（純粋関数）",
+  "exports": {
+    ".": "./src/index.ts"
+  }
+}
