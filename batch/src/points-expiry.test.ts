@@ -30,3 +30,10 @@ describe('findExpiringMembers', () => {
     expect(findExpiringMembers(members, '2026-11-18', 7).map((m) => m.memberId)).toEqual(['M004']);
   });
 });
+
+describe('findExpiringMembers（日本時間の日付）', () => {
+  it.fails('[TC-PT-014][B7] 2025-11-19 0:30（日本時間）に購入した会員の失効日は 2026-11-19', () => {
+    const result = findExpiringMembers([member('M101', 55, '2025-11-19T00:30:00+09:00')], '2026-11-18');
+    expect(result[0]?.expiresOn).toBe('2026-11-19');
+  });
+});

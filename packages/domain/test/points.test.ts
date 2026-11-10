@@ -59,3 +59,19 @@ describe('calcPointExpiryDate', () => {
     expect(calcPointExpiryDate(new Date('2026-10-05T12:00:00+09:00'))).toBe('2027-10-05');
   });
 });
+
+// ポイント履歴に失効予定日を出す（スプリント3レビューでのご要望）前に見つかった不具合。
+// it.fails は「いまは失敗する」ことを確かめるテスト。直したら it に戻す。
+describe('calcPointExpiryDate（日本時間で判定する）', () => {
+  it.fails('[TC-PT-011][B7] 2026-11-18 0:30（日本時間）に購入 → 2027-11-18 まで', () => {
+    expect(calcPointExpiryDate(new Date('2026-11-18T00:30:00+09:00'))).toBe('2027-11-18');
+  });
+
+  it.fails('[TC-PT-012][B7] 2026-11-18 8:59（日本時間）に購入 → 2027-11-18 まで', () => {
+    expect(calcPointExpiryDate(new Date('2026-11-18T08:59:00+09:00'))).toBe('2027-11-18');
+  });
+
+  it('[TC-PT-013] 2026-11-18 9:00（日本時間）に購入 → 2027-11-18 まで', () => {
+    expect(calcPointExpiryDate(new Date('2026-11-18T09:00:00+09:00'))).toBe('2027-11-18');
+  });
+});
