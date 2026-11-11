@@ -63,3 +63,18 @@ describe('GET /health', () => {
     await ctx.close();
   });
 });
+
+// 2026-10-29 16:05 ステージングの応答時間アラート（p95 3.4秒）の調査用。
+// it.fails は「いまは失敗する」ことを確かめるテスト。直したら it に戻す。
+describe('GET /api/products の発行SQL', () => {
+  it.fails('[TC-API-004][B4] 商品一覧（10件）を返すSQLは3本以内', async () => {
+    const ctx = await createTestDb();
+    try {
+      const response = await createApp(ctx.db).request('/api/products');
+      expect(response.status).toBe(200);
+      expect(ctx.queries.length).toBeLessThanOrEqual(3);
+    } finally {
+      await ctx.close();
+    }
+  });
+});
