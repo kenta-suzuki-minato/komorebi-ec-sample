@@ -39,3 +39,19 @@ describe('buildOrderSummary', () => {
     expect(buildOrderSummary([item('BT-350')]).pointsToEarn).toBe(33);
   });
 });
+
+// KEC-17：ギフト包装をつけた注文で、注文画面の消費税が確認メールより1円多い。
+// it.fails は「いまは失敗する」ことを確かめるテスト。直したら it に戻す。
+describe('buildOrderSummary（ギフト包装の消費税）', () => {
+  it.fails('[TC-TAX-002][B1] 包装1点：税込3,650円の消費税は331円', () => {
+    const summary = buildOrderSummary([item('BT-350', 1, true)]);
+    expect(summary.total).toBeYen(3650);
+    expect(summary.taxTotal).toBeYen(331);
+  });
+
+  it.fails('[TC-TAX-003][B1] 包装2点：税込7,850円の消費税は713円', () => {
+    const summary = buildOrderSummary([item('BT-350', 1, true), item('BT-500', 1, true)]);
+    expect(summary.total).toBeYen(7850);
+    expect(summary.taxTotal).toBeYen(713);
+  });
+});
