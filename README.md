@@ -11,11 +11,12 @@ AIコーディングエージェントの使い方を学ぶ書籍の練習用で
 |---|---|
 | `packages/domain` | 金額・消費税・ポイント・のし・住所の業務ルール |
 | `packages/db` | PostgreSQL のマイグレーション（SQL）、Drizzle のテーブル定義、開発用データ |
-| `apps/web` | Webフロント（注文画面の金額表示） |
+| `apps/web` | Webフロント（Next.js。商品ページ、カート、購入手続き） |
 | `apps/api` | APIサーバー（Hono。商品API、注文確認メール、領収書、リクエストの検証） |
 | `batch` | ポイント有効期限、出荷指示データ（Shift_JIS） |
 | `docs` | 要件定義書、技術設計書、用語集、オンボーディングメモ、テンプレート |
 | `test-support` | テスト用の商品マスタ |
+| `e2e` | 画面のE2Eテスト（Playwright） |
 
 ## セットアップ
 
@@ -36,6 +37,15 @@ pnpm dev:api
 
 `http://localhost:8787/api/products` で商品一覧が返れば成功です。単体テスト（`pnpm test`）は Docker なしで動きます（メモリ上の PostgreSQL＝PGlite を使います）。
 
+画面（Webフロント）は Docker なしで動きます。`pnpm dev:web` で起動し、`http://localhost:3000` を開きます。
+
+E2Eテストは、初回だけブラウザを入れてから実行します。テストが Webフロントをビルドして、ポート 3100 で起動します。
+
+```console
+pnpm exec playwright install chromium
+pnpm test:e2e
+```
+
 ## よく使うコマンド
 
 | コマンド | 内容 |
@@ -45,6 +55,8 @@ pnpm dev:api
 | `pnpm test` | 単体テスト（Vitest） |
 | `pnpm db:migrate` / `pnpm db:seed` | マイグレーション／開発用データ |
 | `pnpm dev:api` | APIサーバーを起動（http://localhost:8787） |
+| `pnpm dev:web` | Webフロントを起動（http://localhost:3000） |
+| `pnpm test:e2e` | E2Eテスト（Playwright） |
 
 ## ブランチとPR
 

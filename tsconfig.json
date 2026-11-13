@@ -20,6 +20,8 @@
     "batch/src",
     "test-support",
     "vitest.config.ts",
-    "vitest.setup.ts"
+    "vitest.setup.ts",
+    "e2e",
+    "playwright.config.ts"
   ]
 }

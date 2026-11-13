@@ -1,6 +1,14 @@
 node_modules/
 dist/
 coverage/
+*.tsbuildinfo
+
+# Next.js・Playwright
+.next/
+.next-e2e/
+next-env.d.ts
+test-results/
+playwright-report/
 *.log
 .DS_Store
 Thumbs.db

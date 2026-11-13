@@ -4,7 +4,19 @@
   "private": true,
   "type": "module",
   "description": "こもれびストア Webフロント（商品ページ・カート・購入手続き）",
+  "scripts": {
+    "dev": "next dev --port 3000",
+    "build": "next build",
+    "start": "next start"
+  },
   "dependencies": {
-    "@komorebi/domain": "workspace:*"
+    "@komorebi/domain": "workspace:*",
+    "next": "15.5.29",
+    "react": "19.2.9",
+    "react-dom": "19.2.9"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.7"
   }
 }

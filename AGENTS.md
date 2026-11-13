@@ -17,9 +17,10 @@
 |---|---|
 | `packages/domain` | 金額・消費税・ポイント・のし・住所の業務ルール（純粋関数） |
 | `packages/db` | PostgreSQL のマイグレーション |
-| `apps/web` | Webフロント。`src/lib/pricing/` が注文画面の金額表示 |
+| `apps/web` | Webフロント（Next.js App Router）。`app/checkout/` が購入手続きの画面、`src/lib/pricing/` が注文画面の金額表示 |
 | `apps/api` | APIサーバー。注文確認メール、領収書、リクエストの検証 |
 | `batch` | ポイント有効期限、出荷指示データ（Shift_JIS） |
+| `e2e` | 画面のE2Eテスト（Playwright）。テストのタイトルの先頭はテスト仕様書のID |
 | `docs` | 要件定義書、技術設計書、用語集 |
 
 ## コマンド（この順に実行する）
@@ -29,6 +30,7 @@ pnpm install
 pnpm lint && pnpm typecheck && pnpm test
 ```
 
+- 画面（`apps/web/app/`）を変えたら `pnpm test:e2e` も実行する。
 - 変更したら、上の3つがすべて通ることを確認してから「完了」と報告する。
 - テストを通すためにテストの期待値を書き換えない。期待値は要件定義書と `docs/test/` の表が正。
 

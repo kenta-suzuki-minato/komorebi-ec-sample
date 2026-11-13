@@ -5,6 +5,8 @@ import tseslint from 'typescript-eslint';
 export default defineConfig(
   { ignores: ['**/node_modules/**', 'legacy/**', 'docs/**'] },
   js.configs.recommended,
+  // Next.js と Playwright が作るファイル
+  { ignores: ['**/.next/**', '**/.next-e2e/**', '**/next-env.d.ts', 'test-results/**', 'playwright-report/**'] },
   tseslint.configs.recommended,
   {
     rules: {
