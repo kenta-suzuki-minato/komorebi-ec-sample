@@ -40,18 +40,54 @@ describe('buildOrderSummary', () => {
   });
 });
 
-// KEC-17：ギフト包装をつけた注文で、注文画面の消費税が確認メールより1円多い。
-// it.fails は「いまは失敗する」ことを確かめるテスト。直したら it に戻す。
-describe('buildOrderSummary（ギフト包装の消費税）', () => {
-  it.fails('[TC-TAX-002][B1] 包装1点：税込3,650円の消費税は331円', () => {
+// 金額計算テストケース（消費税）：docs/test/金額計算テストケース.xlsx の No.1～8。
+// 正しい消費税＝税率ごとの税込合計 × 10 ÷ 110 を1回だけ切り捨て（KEC-17、PR #142）
+describe('buildOrderSummary（金額計算テストケース：消費税）', () => {
+  it('[TC-TAX-001] BT-350 1点：税込3,300円の消費税は300円', () => {
+    const summary = buildOrderSummary([item('BT-350')]);
+    expect(summary.total).toBeYen(3300);
+    expect(summary.taxTotal).toBeYen(300);
+  });
+
+  it('[TC-TAX-002] 包装1点：税込3,650円の消費税は331円', () => {
     const summary = buildOrderSummary([item('BT-350', 1, true)]);
     expect(summary.total).toBeYen(3650);
     expect(summary.taxTotal).toBeYen(331);
   });
 
-  it.fails('[TC-TAX-003][B1] 包装2点：税込7,850円の消費税は713円', () => {
+  it('[TC-TAX-003] 包装2点：税込7,850円の消費税は713円', () => {
     const summary = buildOrderSummary([item('BT-350', 1, true), item('BT-500', 1, true)]);
     expect(summary.total).toBeYen(7850);
     expect(summary.taxTotal).toBeYen(713);
+  });
+
+  it('[TC-TAX-004] 保存容器S・M・Lをそれぞれ包装：税込4,460円の消費税は405円', () => {
+    const summary = buildOrderSummary([item('FC-S', 1, true), item('FC-M', 1, true), item('FC-L', 1, true)]);
+    expect(summary.total).toBeYen(4460);
+    expect(summary.taxTotal).toBeYen(405);
+  });
+
+  it('[TC-TAX-005] リネンふきん2点＋包装2点（1行）：税込4,000円の消費税は363円', () => {
+    const summary = buildOrderSummary([item('LT-01', 2, true)]);
+    expect(summary.total).toBeYen(4000);
+    expect(summary.taxTotal).toBeYen(363);
+  });
+
+  it('[TC-TAX-006] 木のマグカップ＋包装：税込2,990円の消費税は271円', () => {
+    const summary = buildOrderSummary([item('MG-01', 1, true)]);
+    expect(summary.total).toBeYen(2990);
+    expect(summary.taxTotal).toBeYen(271);
+  });
+
+  it('[TC-TAX-007] すっきりボトル3点（包装なし）：税込8,910円の消費税は810円', () => {
+    const summary = buildOrderSummary([item('SB-480', 3)]);
+    expect(summary.total).toBeYen(8910);
+    expect(summary.taxTotal).toBeYen(810);
+  });
+
+  it('[TC-TAX-008] バスタオル＋マグ＋包装2点：税込8,840円の消費税は803円', () => {
+    const summary = buildOrderSummary([item('LT-02', 1, true), item('MG-01', 1, true)]);
+    expect(summary.total).toBeYen(8840);
+    expect(summary.taxTotal).toBeYen(803);
   });
 });

@@ -1,3 +1,4 @@
+import { TAX_RATES } from '@komorebi/domain';
 import type { CartItem, OrderLine } from './types';
 
 /** カートの商品から、注文画面の商品明細を作る */
@@ -11,8 +12,7 @@ export function buildProductLines(items: readonly CartItem[]): OrderLine[] {
       unitPrice: item.unitPrice,
       quantity: item.quantity,
       amount,
-      taxRate: 0.1,
-      taxAmount: Math.floor((amount * 10) / 110),
+      taxRate: TAX_RATES.standard,
     };
   });
 }

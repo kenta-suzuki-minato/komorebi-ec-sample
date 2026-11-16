@@ -18,8 +18,6 @@ export interface OrderLine extends PricedLine {
   name: string;
   unitPrice: number;
   quantity: number;
-  /** 明細の消費税額（表示用） */
-  taxAmount: number;
   /** 包装行が対象とする商品の SKU */
   parentSku?: string;
 }

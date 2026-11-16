@@ -3,6 +3,11 @@
 
 export type LineType = 'product' | 'gift_wrap' | 'shipping';
 
+/** 税率（標準10%） */
+export const TAX_RATES = {
+  standard: 0.1,
+} as const;
+
 /** 金額計算に使う明細。金額はすべて税込 */
 export interface PricedLine {
   lineType: LineType;
