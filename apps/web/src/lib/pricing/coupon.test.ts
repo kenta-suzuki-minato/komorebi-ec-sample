@@ -14,6 +14,15 @@ describe('applyCouponToSummary（KEC-22 金額計算の回帰テスト）', () =
     expect(summary.taxTotal).toBeYen(286);
   });
 
+  it('[TC-TAX-010] クーポン500円引き（包装なし）：税込2,800円の消費税は254円', () => {
+    const bottle = buildOrderSummary([
+      { sku: 'BT-350', name: PRODUCTS['BT-350'].name, unitPrice: PRODUCTS['BT-350'].price, quantity: 1, giftWrap: false },
+    ]);
+    const summary = applyCouponToSummary(bottle, 500);
+    expect(summary.total).toBeYen(2800);
+    expect(summary.taxTotal).toBeYen(254);
+  });
+
   it('[TC-PT-007] クーポン500円引き：商品代金3,300円−500円で28ポイント', () => {
     expect(applyCouponToSummary(bottleWithWrap, 500).pointsToEarn).toBe(28);
   });
