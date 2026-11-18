@@ -29,7 +29,7 @@ export default function ConfirmPage() {
 
   return (
     <>
-      <CheckoutSteps steps={CHECKOUT_STEPS} current={3} />
+      <CheckoutSteps steps={CHECKOUT_STEPS} current={2} />
       <h1>ご注文内容の確認</h1>
       <table>
         <tbody>
@@ -79,7 +79,7 @@ export default function ConfirmPage() {
       <p>{paymentLabel(payment)}</p>
 
       <div className="actions">
-        <button type="button" onClick={() => router.push('/checkout/payment')}>
+        <button type="button" onClick={() => router.push('/checkout/shipping')}>
           戻る
         </button>
         <button type="button" onClick={() => router.push('/checkout/complete')}>
