@@ -15,6 +15,12 @@ export default defineConfig(
     },
   },
   {
+    files: ['scripts/**/*.mjs'],
+    languageOptions: {
+      globals: { process: 'readonly', console: 'readonly' },
+    },
+  },
+  {
     // 金額の丸めは packages/domain だけで行う（KEC-17 の再発防止）
     files: ['apps/**/*.ts', 'batch/**/*.ts'],
     rules: {

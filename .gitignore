@@ -22,3 +22,6 @@ Thumbs.db
 .vscode/*
 !.vscode/extensions.json
 .idea/
+
+# scripts/verify-tags.mjs の作業用
+.vitest-*.json

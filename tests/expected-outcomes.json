@@ -1,0 +1,264 @@
+{
+  "_comment": "scripts/verify-tags.mjs が使う、タグごとの期待結果。knownBugs の値は it.fails を外したときの失敗メッセージの一部（空なら確認しない）",
+  "tags": {
+    "ch01-start": {
+      "note": "AI設定なし。README の手順が足りない（D7）",
+      "knownBugs": {},
+      "minTests": 120
+    },
+    "ch01-end": {
+      "note": "AGENTS.md（ルートと packages/domain）",
+      "knownBugs": {}
+    },
+    "ch02-start": {
+      "note": "ダミーの秘密情報（.env.local、legacy/old-shop/config.php）と会員サンプル data/（B9）",
+      "knownBugs": {}
+    },
+    "ch02-incident-1105": {
+      "note": "池田さんの develop 直接push。pnpm-lock.yaml が古い（B10）",
+      "install": "fail",
+      "installError": "ERR_PNPM_OUTDATED_LOCKFILE"
+    },
+    "ch03-start": {
+      "note": "税計算が3か所（D1）、使われていない coupon.ts（D5）",
+      "knownBugs": {}
+    },
+    "ch03-env-broken": {
+      "note": "10/06 の状態：Node 22 以外では pnpm install が止まる（engine-strict）。DBのポート 5432（D7）",
+      "requiresNodeMajor": 22,
+      "installErrorOtherNode": "ERR_PNPM_UNSUPPORTED_ENGINE",
+      "knownBugs": {}
+    },
+    "ch04-start": {
+      "note": "のし表書きが3か所＋出荷CSV、B7（UTC）、B8（全角）",
+      "knownBugs": {
+        "TC-PT-011": "expected '2027-11-17' to be '2027-11-18'",
+        "TC-PT-012": "expected '2027-11-17' to be '2027-11-18'",
+        "TC-PT-014": "expected '2026-11-18' to be '2026-11-19'",
+        "TC-ADR-01": "",
+        "TC-ADR-02": "",
+        "TC-ADR-03": "",
+        "TC-ADR-04": "",
+        "TC-ADR-05": "",
+        "TC-ADR-06": "",
+        "TC-ADR-07": "",
+        "TC-ADR-08": "",
+        "TC-ADR-11": "",
+        "TC-ADR-12": "",
+        "TC-ADR-13": "",
+        "TC-ADR-14": "",
+        "TC-ADR-15": "",
+        "TC-ADR-16": "",
+        "TC-ADR-17": ""
+      }
+    },
+    "ch05-kec17": {
+      "note": "B1：包装行の消費税を明細ごとに四捨五入（PR #142 の前）",
+      "knownBugs": {
+        "TC-PT-011": "expected '2027-11-17' to be '2027-11-18'",
+        "TC-PT-012": "expected '2027-11-17' to be '2027-11-18'",
+        "TC-PT-014": "expected '2026-11-18' to be '2026-11-19'",
+        "TC-ADR-01": "",
+        "TC-ADR-02": "",
+        "TC-ADR-03": "",
+        "TC-ADR-04": "",
+        "TC-ADR-05": "",
+        "TC-ADR-06": "",
+        "TC-ADR-07": "",
+        "TC-ADR-08": "",
+        "TC-ADR-11": "",
+        "TC-ADR-12": "",
+        "TC-ADR-13": "",
+        "TC-ADR-14": "",
+        "TC-ADR-15": "",
+        "TC-ADR-16": "",
+        "TC-ADR-17": "",
+        "TC-TAX-002": "期待：331　実際：332",
+        "TC-TAX-003": "期待：713　実際：714"
+      }
+    },
+    "ch05-n1": {
+      "note": "B4：商品一覧APIの N+1（商品ごとに在庫と画像を取得）＋10/29 のログ",
+      "knownBugs": {
+        "TC-PT-011": "expected '2027-11-17' to be '2027-11-18'",
+        "TC-PT-012": "expected '2027-11-17' to be '2027-11-18'",
+        "TC-PT-014": "expected '2026-11-18' to be '2026-11-19'",
+        "TC-ADR-01": "",
+        "TC-ADR-02": "",
+        "TC-ADR-03": "",
+        "TC-ADR-04": "",
+        "TC-ADR-05": "",
+        "TC-ADR-06": "",
+        "TC-ADR-07": "",
+        "TC-ADR-08": "",
+        "TC-ADR-11": "",
+        "TC-ADR-12": "",
+        "TC-ADR-13": "",
+        "TC-ADR-14": "",
+        "TC-ADR-15": "",
+        "TC-ADR-16": "",
+        "TC-ADR-17": "",
+        "TC-TAX-002": "期待：331　実際：332",
+        "TC-TAX-003": "期待：713　実際：714",
+        "TC-API-004": "to be less than or equal to 3"
+      }
+    },
+    "ch06-start": {
+      "note": "PR #142 のあと。B2/B3（ポイント）",
+      "knownBugs": {
+        "TC-PT-011": "expected '2027-11-17' to be '2027-11-18'",
+        "TC-PT-012": "expected '2027-11-17' to be '2027-11-18'",
+        "TC-PT-014": "expected '2026-11-18' to be '2026-11-19'",
+        "TC-ADR-01": "",
+        "TC-ADR-02": "",
+        "TC-ADR-03": "",
+        "TC-ADR-04": "",
+        "TC-ADR-05": "",
+        "TC-ADR-06": "",
+        "TC-ADR-07": "",
+        "TC-ADR-08": "",
+        "TC-ADR-11": "",
+        "TC-ADR-12": "",
+        "TC-ADR-13": "",
+        "TC-ADR-14": "",
+        "TC-ADR-15": "",
+        "TC-ADR-16": "",
+        "TC-ADR-17": "",
+        "TC-PT-004": "expected 36 to be 33",
+        "TC-PT-005": "expected 22 to be 23",
+        "TC-API-004": "to be less than or equal to 3"
+      },
+      "minTests": 150
+    },
+    "ch07-start": {
+      "note": "D1 の残り（メール・領収書の独自計算）、D2（number/string）",
+      "knownBugs": {
+        "TC-PT-011": "expected '2027-11-17' to be '2027-11-18'",
+        "TC-PT-012": "expected '2027-11-17' to be '2027-11-18'",
+        "TC-PT-014": "expected '2026-11-18' to be '2026-11-19'",
+        "TC-ADR-01": "",
+        "TC-ADR-02": "",
+        "TC-ADR-03": "",
+        "TC-ADR-04": "",
+        "TC-ADR-05": "",
+        "TC-ADR-06": "",
+        "TC-ADR-07": "",
+        "TC-ADR-08": "",
+        "TC-ADR-11": "",
+        "TC-ADR-12": "",
+        "TC-ADR-13": "",
+        "TC-ADR-14": "",
+        "TC-ADR-15": "",
+        "TC-ADR-16": "",
+        "TC-ADR-17": "",
+        "TC-PT-004": "expected 36 to be 33",
+        "TC-PT-005": "expected 22 to be 23",
+        "TC-API-004": "to be less than or equal to 3"
+      }
+    },
+    "ch07-end": {
+      "note": "税額は calcOrderTotals だけ＋ESLint ルール（R17 の参考解）",
+      "knownBugs": {
+        "TC-PT-011": "expected '2027-11-17' to be '2027-11-18'",
+        "TC-PT-012": "expected '2027-11-17' to be '2027-11-18'",
+        "TC-PT-014": "expected '2026-11-18' to be '2026-11-19'",
+        "TC-ADR-01": "",
+        "TC-ADR-02": "",
+        "TC-ADR-03": "",
+        "TC-ADR-04": "",
+        "TC-ADR-05": "",
+        "TC-ADR-06": "",
+        "TC-ADR-07": "",
+        "TC-ADR-08": "",
+        "TC-ADR-11": "",
+        "TC-ADR-12": "",
+        "TC-ADR-13": "",
+        "TC-ADR-14": "",
+        "TC-ADR-15": "",
+        "TC-ADR-16": "",
+        "TC-ADR-17": "",
+        "TC-PT-004": "expected 36 to be 33",
+        "TC-PT-005": "expected 22 to be 23",
+        "TC-API-004": "to be less than or equal to 3"
+      }
+    },
+    "ch08-start": {
+      "note": "feature/KEC-22-regression-tests：Math.round で税額を計算する違反",
+      "knownBugs": {
+        "TC-PT-011": "expected '2027-11-17' to be '2027-11-18'",
+        "TC-PT-012": "expected '2027-11-17' to be '2027-11-18'",
+        "TC-PT-014": "expected '2026-11-18' to be '2026-11-19'",
+        "TC-ADR-01": "",
+        "TC-ADR-02": "",
+        "TC-ADR-03": "",
+        "TC-ADR-04": "",
+        "TC-ADR-05": "",
+        "TC-ADR-06": "",
+        "TC-ADR-07": "",
+        "TC-ADR-08": "",
+        "TC-ADR-11": "",
+        "TC-ADR-12": "",
+        "TC-ADR-13": "",
+        "TC-ADR-14": "",
+        "TC-ADR-15": "",
+        "TC-ADR-16": "",
+        "TC-ADR-17": "",
+        "TC-PT-004": "expected 36 to be 33",
+        "TC-PT-005": "expected 22 to be 23",
+        "TC-API-004": "to be less than or equal to 3"
+      }
+    },
+    "ch09-start": {
+      "note": "AIツール利用ルール v0.1 だけ（管理設定なし）",
+      "knownBugs": {
+        "TC-PT-011": "expected '2027-11-17' to be '2027-11-18'",
+        "TC-PT-012": "expected '2027-11-17' to be '2027-11-18'",
+        "TC-PT-014": "expected '2026-11-18' to be '2026-11-19'",
+        "TC-ADR-01": "",
+        "TC-ADR-02": "",
+        "TC-ADR-03": "",
+        "TC-ADR-04": "",
+        "TC-ADR-05": "",
+        "TC-ADR-06": "",
+        "TC-ADR-07": "",
+        "TC-ADR-08": "",
+        "TC-ADR-11": "",
+        "TC-ADR-12": "",
+        "TC-ADR-13": "",
+        "TC-ADR-14": "",
+        "TC-ADR-15": "",
+        "TC-ADR-16": "",
+        "TC-ADR-17": "",
+        "TC-PT-004": "expected 36 to be 33",
+        "TC-PT-005": "expected 22 to be 23",
+        "TC-API-004": "to be less than or equal to 3"
+      }
+    },
+    "ch10-start": {
+      "note": "技術設計書4章が古い（D6）、テスト観点表",
+      "knownBugs": {
+        "TC-PT-011": "expected '2027-11-17' to be '2027-11-18'",
+        "TC-PT-012": "expected '2027-11-17' to be '2027-11-18'",
+        "TC-PT-014": "expected '2026-11-18' to be '2026-11-19'",
+        "TC-ADR-01": "",
+        "TC-ADR-02": "",
+        "TC-ADR-03": "",
+        "TC-ADR-04": "",
+        "TC-ADR-05": "",
+        "TC-ADR-06": "",
+        "TC-ADR-07": "",
+        "TC-ADR-08": "",
+        "TC-ADR-11": "",
+        "TC-ADR-12": "",
+        "TC-ADR-13": "",
+        "TC-ADR-14": "",
+        "TC-ADR-15": "",
+        "TC-ADR-16": "",
+        "TC-ADR-17": "",
+        "TC-PT-004": "expected 36 to be 33",
+        "TC-PT-005": "expected 22 to be 23",
+        "TC-API-004": "to be less than or equal to 3"
+      }
+    }
+  }
+}
