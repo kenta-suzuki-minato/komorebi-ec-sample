@@ -96,7 +96,7 @@ export default function CartPage() {
       </table>
 
       <div className="actions">
-        <button type="button" onClick={() => router.push('/checkout/delivery')}>
+        <button type="button" onClick={() => router.push('/checkout/shipping')}>
           ご購入手続きへ
         </button>
       </div>

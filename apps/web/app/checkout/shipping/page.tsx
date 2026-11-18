@@ -1,32 +1,28 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState, type ChangeEvent } from 'react';
+import type { ChangeEvent } from 'react';
 import type { NoshiOmotegaki } from '@komorebi/domain';
 import { NOSHI_NONE_LABEL, NOSHI_OPTIONS } from '../../../src/lib/noshiOptions';
-import { isDeliveryComplete, type DeliveryForm } from '../../../src/lib/checkout';
+import { isDeliveryComplete, PAYMENT_METHODS, type DeliveryForm } from '../../../src/lib/checkout';
 import { CheckoutSteps } from '../../_components/CheckoutSteps';
 import { useStore } from '../../_components/StoreProvider';
 import { CHECKOUT_STEPS } from '../steps';
 
-export default function DeliveryPage() {
-  const { delivery, setDelivery, noshi, setNoshi } = useStore();
+// お届け先と支払い方法（旧：お届け先、お支払い方法の2画面）
+export default function ShippingPage() {
+  // 入力は StoreProvider に直接持たせる。確認画面から戻っても、入力した値が残る（KEC-18）
+  const { delivery: form, setDelivery, noshi, setNoshi, payment, setPayment } = useStore();
   const router = useRouter();
-  // 入力中の値。前の画面・次の画面から戻ってきたときは、保存済みの値から始める
-  const [form, setForm] = useState<DeliveryForm>(delivery);
 
   const update = (key: keyof DeliveryForm) => (event: ChangeEvent<HTMLInputElement>) =>
-    setForm({ ...form, [key]: event.target.value });
-
-  function next() {
-    setDelivery(form);
-    router.push('/checkout/payment');
-  }
+    setDelivery({ ...form, [key]: event.target.value });
 
   return (
     <>
       <CheckoutSteps steps={CHECKOUT_STEPS} current={1} />
-      <h1>お届け先</h1>
+      <h1>お届け先と支払い方法</h1>
+      <h2>お届け先</h2>
       <label htmlFor="name">お名前</label>
       <input id="name" type="text" autoComplete="name" value={form.name} onChange={update('name')} />
       <label htmlFor="postalCode">郵便番号</label>
@@ -46,12 +42,28 @@ export default function DeliveryPage() {
         ))}
       </select>
 
+      <fieldset>
+        <legend>お支払い方法</legend>
+        {PAYMENT_METHODS.map((method) => (
+          <label key={method.value}>
+            <input
+              type="radio"
+              name="payment"
+              value={method.value}
+              checked={payment === method.value}
+              onChange={() => setPayment(method.value)}
+            />
+            {method.label}
+          </label>
+        ))}
+      </fieldset>
+
       <div className="actions">
         <button type="button" onClick={() => router.push('/checkout/cart')}>
           戻る
         </button>
-        <button type="button" onClick={next} disabled={!isDeliveryComplete(form)}>
-          お支払い方法へ進む
+        <button type="button" onClick={() => router.push('/checkout/confirm')} disabled={!isDeliveryComplete(form) || payment === ''}>
+          確認画面へ進む
         </button>
       </div>
     </>
