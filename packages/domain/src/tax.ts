@@ -59,3 +59,8 @@ export function calcOrderTotals(lines: readonly PricedLine[]): OrderTotals {
     breakdown,
   };
 }
+
+/** 税率の表示（0.1 → "10%"） */
+export function formatTaxRate(rate: number): string {
+  return `${Math.round(rate * 100)}%`;
+}

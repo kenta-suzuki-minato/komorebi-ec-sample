@@ -1,23 +1,12 @@
-import { calcOrderTotals, formatYen } from '@komorebi/domain';
+import { calcOrderTotals, formatTaxRate, formatYen } from '@komorebi/domain';
 import Mustache from 'mustache';
 import { toPricedLines } from '../orderLines';
 import type { OrderRecord } from '../types';
 import { ORDER_CONFIRMATION_TEMPLATE } from './orderConfirmationTemplate';
 
-const STANDARD_RATE = 0.1;
-
-/** 税率別の内訳（メール本文用） */
-function taxOfIncluded(amount: number, rate: number): number {
-  const percent = Math.round(rate * 100);
-  return Math.floor((amount * percent) / (100 + percent));
-}
-
-/** 注文確認メールの本文（KEC-16） */
+/** 注文確認メールの本文（KEC-16）。金額と消費税は calcOrderTotals の結果を表示するだけ */
 export function renderOrderConfirmationMail(order: OrderRecord): string {
   const totals = calcOrderTotals(toPricedLines(order.lines));
-  const standardAmount = order.lines
-    .filter((line) => line.taxRateCode === 'standard')
-    .reduce((sum, line) => sum + Number(line.amountInclTax), 0);
 
   return Mustache.render(ORDER_CONFIRMATION_TEMPLATE, {
     customerName: order.customerName,
@@ -29,8 +18,11 @@ export function renderOrderConfirmationMail(order: OrderRecord): string {
     })),
     total: formatYen(totals.total),
     taxTotal: formatYen(totals.taxTotal),
-    standardAmount: formatYen(standardAmount),
-    standardTax: formatYen(taxOfIncluded(standardAmount, STANDARD_RATE)),
+    breakdown: totals.breakdown.map((row) => ({
+      rate: formatTaxRate(row.rate),
+      taxable: formatYen(row.taxableAmount),
+      tax: formatYen(row.tax),
+    })),
     noshi: order.noshi ?? false,
   });
 }

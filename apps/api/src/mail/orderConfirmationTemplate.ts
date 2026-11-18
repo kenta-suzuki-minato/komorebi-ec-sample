@@ -11,7 +11,9 @@ export const ORDER_CONFIRMATION_TEMPLATE = `{{{customerName}}} 様
 {{/lines}}
 
 合計　{{{total}}}（うち消費税 {{{taxTotal}}}）
-　10%対象 {{{standardAmount}}}（消費税 {{{standardTax}}}）
+{{#breakdown}}
+　{{{rate}}}対象 {{{taxable}}}（消費税 {{{tax}}}）
+{{/breakdown}}
 {{#noshi}}
 
 のし：{{{omotegaki}}}

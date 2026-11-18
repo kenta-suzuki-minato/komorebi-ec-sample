@@ -14,4 +14,17 @@ export default defineConfig(
       'no-irregular-whitespace': ['error', { skipStrings: true, skipTemplates: true, skipComments: true }],
     },
   },
+  {
+    // 金額の丸めは packages/domain だけで行う（KEC-17 の再発防止）
+    files: ['apps/**/*.ts', 'batch/**/*.ts'],
+    rules: {
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: "CallExpression[callee.object.name='Math'][callee.property.name=/^(round|floor|ceil|trunc)$/]",
+          message: '金額の丸めは packages/domain（calcOrderTotals など）で行ってください。',
+        },
+      ],
+    },
+  },
 );

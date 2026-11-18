@@ -28,3 +28,16 @@ describe('renderOrderConfirmationMail', () => {
     expect(body).not.toContain('のし：');
   });
 });
+
+describe('renderOrderConfirmationMail（税率別の内訳は calcOrderTotals から）', () => {
+  it('[TC-TAX-004] 保存容器S・M・Lをそれぞれ包装：うち消費税 405円', () => {
+    const lines = [
+      productLine('FC-S', 'ふた付き保存容器 S', 1, 880),
+      productLine('FC-M', 'ふた付き保存容器 M', 1, 1100),
+      productLine('FC-L', 'ふた付き保存容器 L', 1, 1430),
+    ];
+    const body = renderOrderConfirmationMail(order([...lines, ...lines.map(wrapLine)]));
+    expect(body).toContain('合計　4,460円（うち消費税 405円）');
+    expect(body).toContain('10%対象 4,460円（消費税 405円）');
+  });
+});
