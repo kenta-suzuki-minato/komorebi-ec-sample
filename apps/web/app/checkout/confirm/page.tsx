@@ -71,6 +71,8 @@ export default function ConfirmPage() {
         </dd>
         <dt>電話番号</dt>
         <dd>{delivery.phone}</dd>
+        <dt>お届け希望日</dt>
+        <dd>{delivery.requestedDate || '指定なし'}</dd>
         <dt>のし</dt>
         <dd>{noshi || NOSHI_NONE_LABEL}</dd>
       </dl>

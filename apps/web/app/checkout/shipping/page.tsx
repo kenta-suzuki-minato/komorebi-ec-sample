@@ -1,10 +1,10 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import type { ChangeEvent } from 'react';
+import { useEffect, useState, type ChangeEvent } from 'react';
 import type { NoshiOmotegaki } from '@komorebi/domain';
 import { NOSHI_NONE_LABEL, NOSHI_OPTIONS } from '../../../src/lib/noshiOptions';
-import { isDeliveryComplete, PAYMENT_METHODS, type DeliveryForm } from '../../../src/lib/checkout';
+import { getDeliveryDateOptions, isDeliveryComplete, PAYMENT_METHODS, type DeliveryForm } from '../../../src/lib/checkout';
 import { CheckoutSteps } from '../../_components/CheckoutSteps';
 import { useStore } from '../../_components/StoreProvider';
 import { CHECKOUT_STEPS } from '../steps';
@@ -14,9 +14,20 @@ export default function ShippingPage() {
   // 入力は StoreProvider に直接持たせる。確認画面から戻っても、入力した値が残る（KEC-18）
   const { delivery: form, setDelivery, noshi, setNoshi, payment, setPayment } = useStore();
   const router = useRouter();
+  const [deliveryDateOptions, setDeliveryDateOptions] = useState<string[]>([]);
+  useEffect(() => {
+    setDeliveryDateOptions(getDeliveryDateOptions(new Date()));
+  }, []);
 
-  const update = (key: keyof DeliveryForm) => (event: ChangeEvent<HTMLInputElement>) =>
+  const update = (key: keyof DeliveryForm) => (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
     setDelivery({ ...form, [key]: event.target.value });
+
+  const requestedDate = deliveryDateOptions.find((date) => date === form.requestedDate) ?? '';
+
+  function next() {
+    setDelivery({ ...form, requestedDate });
+    router.push('/checkout/confirm');
+  }
 
   return (
     <>
@@ -31,6 +42,14 @@ export default function ShippingPage() {
       <input id="address" type="text" value={form.address} onChange={update('address')} />
       <label htmlFor="phone">電話番号</label>
       <input id="phone" type="tel" placeholder="03-0000-0000" value={form.phone} onChange={update('phone')} />
+
+      <label htmlFor="requestedDate">お届け希望日</label>
+      <select id="requestedDate" value={requestedDate} onChange={update('requestedDate')}>
+        <option value="">指定なし</option>
+        {deliveryDateOptions.map((date) => (
+          <option key={date} value={date}>{date}</option>
+        ))}
+      </select>
 
       <label htmlFor="noshi">のし（ギフト包装を選んだ商品に付けます）</label>
       <select id="noshi" value={noshi} onChange={(event) => setNoshi(event.target.value as NoshiOmotegaki | '')}>
@@ -62,7 +81,7 @@ export default function ShippingPage() {
         <button type="button" onClick={() => router.push('/checkout/cart')}>
           戻る
         </button>
-        <button type="button" onClick={() => router.push('/checkout/confirm')} disabled={!isDeliveryComplete(form) || payment === ''}>
+        <button type="button" onClick={next} disabled={!isDeliveryComplete(form) || payment === ''}>
           確認画面へ進む
         </button>
       </div>
