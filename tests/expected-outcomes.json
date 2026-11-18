@@ -1,5 +1,5 @@
 {
-  "_comment": "scripts/verify-tags.mjs が使う、タグごとの期待結果。knownBugs の値は it.fails を外したときの失敗メッセージの一部（空なら確認しない）",
+  "_comment": "scripts/verify-tags.mjs が使う、タグごとの期待結果。knownBugs の値は it.fails を外したときの失敗メッセージの一部（空なら確認しない）。e2e.fail はテストIDと失敗メッセージの一部（それ以外のE2Eテストはすべて成功）。--e2e を付けたときだけ確認する",
   "tags": {
     "ch01-start": {
       "note": "AI設定なし。README の手順が足りない（D7）",
@@ -128,7 +128,42 @@
         "TC-PT-005": "expected 22 to be 23",
         "TC-API-004": "to be less than or equal to 3"
       },
-      "minTests": 150
+      "minTests": 150,
+      "e2e": {
+        "fail": {}
+      }
+    },
+    "ch06-pr151": {
+      "note": "PR #151 の push 時点（11/18 17:05 のCI）：購入手続き3画面。B5（確認画面から戻るとお届け先の入力が消える）と waitForTimeout",
+      "knownBugs": {
+        "TC-PT-011": "expected '2027-11-17' to be '2027-11-18'",
+        "TC-PT-012": "expected '2027-11-17' to be '2027-11-18'",
+        "TC-PT-014": "expected '2026-11-18' to be '2026-11-19'",
+        "TC-ADR-01": "",
+        "TC-ADR-02": "",
+        "TC-ADR-03": "",
+        "TC-ADR-04": "",
+        "TC-ADR-05": "",
+        "TC-ADR-06": "",
+        "TC-ADR-07": "",
+        "TC-ADR-08": "",
+        "TC-ADR-11": "",
+        "TC-ADR-12": "",
+        "TC-ADR-13": "",
+        "TC-ADR-14": "",
+        "TC-ADR-15": "",
+        "TC-ADR-16": "",
+        "TC-ADR-17": "",
+        "TC-PT-004": "expected 36 to be 33",
+        "TC-PT-005": "expected 22 to be 23",
+        "TC-API-004": "to be less than or equal to 3"
+      },
+      "minTests": 150,
+      "e2e": {
+        "fail": {
+          "TC-CHK-012": "Test timeout of 30000ms exceeded"
+        }
+      }
     },
     "ch07-start": {
       "note": "D1 の残り（メール・領収書の独自計算）、D2（number/string）",
@@ -154,6 +189,9 @@
         "TC-PT-004": "expected 36 to be 33",
         "TC-PT-005": "expected 22 to be 23",
         "TC-API-004": "to be less than or equal to 3"
+      },
+      "e2e": {
+        "fail": {}
       }
     },
     "ch07-end": {
@@ -180,6 +218,9 @@
         "TC-PT-004": "expected 36 to be 33",
         "TC-PT-005": "expected 22 to be 23",
         "TC-API-004": "to be less than or equal to 3"
+      },
+      "e2e": {
+        "fail": {}
       }
     },
     "ch08-start": {
@@ -206,6 +247,9 @@
         "TC-PT-004": "expected 36 to be 33",
         "TC-PT-005": "expected 22 to be 23",
         "TC-API-004": "to be less than or equal to 3"
+      },
+      "e2e": {
+        "fail": {}
       }
     },
     "ch09-start": {
@@ -232,6 +276,9 @@
         "TC-PT-004": "expected 36 to be 33",
         "TC-PT-005": "expected 22 to be 23",
         "TC-API-004": "to be less than or equal to 3"
+      },
+      "e2e": {
+        "fail": {}
       }
     },
     "ch10-start": {
@@ -258,6 +305,39 @@
         "TC-PT-004": "expected 36 to be 33",
         "TC-PT-005": "expected 22 to be 23",
         "TC-API-004": "to be less than or equal to 3"
+      },
+      "e2e": {
+        "fail": {}
+      }
+    },
+    "x-upgrade": {
+      "note": "main（AIツールの設定つき）＋ Next.js 16 への更新のPR（D3）。セキュリティレビュー用に、検索キーワードをそのままHTMLにする /search と、画像のホストを制限しない next.config.ts を含む",
+      "knownBugs": {
+        "TC-PT-011": "expected '2027-11-17' to be '2027-11-18'",
+        "TC-PT-012": "expected '2027-11-17' to be '2027-11-18'",
+        "TC-PT-014": "expected '2026-11-18' to be '2026-11-19'",
+        "TC-ADR-01": "",
+        "TC-ADR-02": "",
+        "TC-ADR-03": "",
+        "TC-ADR-04": "",
+        "TC-ADR-05": "",
+        "TC-ADR-06": "",
+        "TC-ADR-07": "",
+        "TC-ADR-08": "",
+        "TC-ADR-11": "",
+        "TC-ADR-12": "",
+        "TC-ADR-13": "",
+        "TC-ADR-14": "",
+        "TC-ADR-15": "",
+        "TC-ADR-16": "",
+        "TC-ADR-17": "",
+        "TC-PT-004": "expected 36 to be 33",
+        "TC-PT-005": "expected 22 to be 23",
+        "TC-API-004": "to be less than or equal to 3"
+      },
+      "nextMajor": 16,
+      "e2e": {
+        "fail": {}
       }
     }
   }
