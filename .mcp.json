@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "komorebi_db": {
+      "command": "npx",
+      "args": ["-y", "@toolbox-sdk/server@1.17.0", "--prebuilt", "postgres", "--stdio"],
+      "env": {
+        "POSTGRES_HOST": "${POSTGRES_HOST:-localhost}",
+        "POSTGRES_PORT": "${POSTGRES_PORT:-5432}",
+        "POSTGRES_DATABASE": "${POSTGRES_DATABASE:-komorebi}",
+        "POSTGRES_USER": "${POSTGRES_USER:-komorebi_readonly}",
+        "POSTGRES_PASSWORD": "${POSTGRES_PASSWORD}"
+      }
+    }
+  }
+}

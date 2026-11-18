@@ -64,6 +64,12 @@ pnpm lint && pnpm typecheck && pnpm test
 - `.env`、`.env.*`、`data/` の個人情報、鍵ファイルを読まない・出力しない・コミットしない。
 - PRの説明に「AIツールを使った箇所」を一言書く（チームのルール）。
 
+## AIツールの設定
+
+- 正はこの AGENTS.md。`CLAUDE.md`、`GEMINI.md`、`.github/copilot-instructions.md` にはルールを書き足さない。
+- Codex：`.codex/config.toml`（権限プロファイル、MCPサーバー）、`.codex/agents/`（調査役・レビュー役）。スキルは `.agents/skills/`。
+- 開発用DBには、読み取り専用のロール `komorebi_readonly` でだけつなぐ。ステージング・本番のDBにはつながない。
+
 ## Code Review Rules
 
 レビューでは次の点を優先して見る。好みの問題（命名、書き方の違い）は指摘しない。

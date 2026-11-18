@@ -1,0 +1,36 @@
+# こもれびストア：Codex のプロジェクト設定。
+# このフォルダーを信頼した（trusted）ときだけ読み込まれる。モデルやログインなど個人の設定は ~/.codex/config.toml に書く。
+# .codex/ は Codex からは読み取り専用。人が編集する。
+
+# 秘密情報と個人情報を読ませない権限プロファイル（第2章 レシピ3）
+default_permissions = "minato-dev"
+
+[permissions.minato-dev]
+description = "komorebi-ec用：ワークスペースに書き込み可。秘密情報と個人情報は読ませない"
+extends = ":workspace"
+
+[permissions.minato-dev.filesystem]
+glob_scan_max_depth = 3
+
+[permissions.minato-dev.filesystem.":workspace_roots"]
+"**/.env" = "deny"
+"**/.env.local" = "deny"
+"data" = "deny"
+"legacy/old-shop/config.php" = "deny"
+
+# サブエージェント（.codex/agents/explorer-ja.toml、reviewer-ja.toml）を同時に動かす上限
+[agents]
+max_concurrent_threads_per_session = 3
+
+# 開発用DB（docker compose up -d db）に、読み取り専用のロール komorebi_readonly でつなぐMCPサーバー。
+# MCP Toolbox for Databases の postgres 用の組み込みツール。接続情報は書かず、環境変数から渡す。
+#   POSTGRES_HOST=localhost  POSTGRES_PORT=5432  POSTGRES_DATABASE=komorebi
+#   POSTGRES_USER=komorebi_readonly  POSTGRES_PASSWORD=（.env.example を参照）
+# 書き込みは、DBのロールの権限で止める（packages/db/migrations/0004_readonly_role.sql）。
+[mcp_servers.komorebi_db]
+command = "npx"
+args = ["-y", "@toolbox-sdk/server@1.17.0", "--prebuilt", "postgres", "--stdio"]
+env_vars = ["POSTGRES_HOST", "POSTGRES_PORT", "POSTGRES_DATABASE", "POSTGRES_USER", "POSTGRES_PASSWORD"]
+enabled_tools = ["execute_sql", "list_tables", "list_schemas"]
+default_tools_approval_mode = "prompt"
+startup_timeout_sec = 60
