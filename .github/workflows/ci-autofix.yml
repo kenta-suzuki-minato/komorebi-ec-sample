@@ -1,0 +1,83 @@
+name: ci-autofix
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+permissions:
+  contents: read
+jobs:
+  diagnose:
+    if: >-
+      github.event.workflow_run.conclusion == 'failure' &&
+      github.event.workflow_run.head_repository.full_name == github.repository
+    runs-on: ubuntu-latest
+    outputs:
+      fix_kind: ${{ steps.read.outputs.fix_kind }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          persist-credentials: false
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .node-version
+      - name: 失敗を再現してログを残す
+        run: pnpm install --frozen-lockfile > ci-failure.log 2>&1 || true
+      - uses: openai/codex-action@v1
+        with:
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          prompt-file: .github/codex/ci-autofix.md
+          output-schema-file: .github/codex/ci_diagnosis.schema.json
+          output-file: diagnosis.json
+          permission-profile: ":workspace"
+      - id: read
+        run: echo "fix_kind=$(jq -r .fix_kind diagnosis.json)" >> "$GITHUB_OUTPUT"
+      - run: git diff > codex.patch
+      - uses: actions/upload-artifact@v7
+        with:
+          name: codex-result
+          path: |
+            diagnosis.json
+            codex.patch
+  open_pr:
+    needs: diagnose
+    if: needs.diagnose.outputs.fix_kind != 'unknown'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .node-version
+      - uses: actions/download-artifact@v8
+        with:
+          name: codex-result
+          path: ../codex-result
+      - name: 修正を当てる
+        run: |
+          if [ "${{ needs.diagnose.outputs.fix_kind }}" = "lockfile_update" ]; then
+            pnpm install --lockfile-only --no-frozen-lockfile
+          else
+            git apply ../codex-result/codex.patch
+          fi
+      - name: 下書きのプルリクエストを作る
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          BRANCH="autofix/run-${{ github.event.workflow_run.run_number }}"
+          git config user.name "github-actions[bot]"
+          git config user.email \
+            "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$BRANCH"
+          git commit -am "fix: CIの失敗を修正（Codexの診断にもとづく）"
+          git push -u origin "$BRANCH"
+          jq -r .summary ../codex-result/diagnosis.json > body.md
+          gh pr create --draft --base "${{ github.event.workflow_run.head_branch }}" \
+            --title "CIの失敗の修正案（run ${{ github.event.workflow_run.run_number }}）" \
+            --body-file body.md
