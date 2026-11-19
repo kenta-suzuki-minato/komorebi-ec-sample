@@ -5,8 +5,7 @@ const nextConfig: NextConfig = {
   distDir: process.env.NEXT_DIST_DIR ?? '.next',
   // packages/domain は TypeScript のまま参照する
   transpilePackages: ['@komorebi/domain'],
-  // lint と型チェックはルートの pnpm lint・pnpm typecheck で行う
-  eslint: { ignoreDuringBuilds: true },
+  // 型チェックはルートの pnpm typecheck で行う（Next.js 16 の next build は lint を実行しない）
   typescript: { ignoreBuildErrors: true },
 };
 
