@@ -21,6 +21,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             </Link>
             <nav>
               <Link href="/products">商品一覧</Link>
+              <Link href="/search">商品検索</Link>
               <Link href="/mypage/points">ポイント</Link>
               <CartBadge />
             </nav>
