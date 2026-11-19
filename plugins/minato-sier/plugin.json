@@ -1,0 +1,10 @@
+{
+  "name": "minato-sier",
+  "version": "1.0.0",
+  "description": "みなとデジタルの開発チームの共通手順（設計書とコードの同期、お客様向けの文面）",
+  "author": {
+    "name": "みなとデジタル 開発チーム"
+  },
+  "license": "MIT",
+  "keywords": ["design-doc", "customer"]
+}

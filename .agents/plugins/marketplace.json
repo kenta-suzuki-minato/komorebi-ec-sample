@@ -1,0 +1,20 @@
+{
+  "name": "minato-digital",
+  "interface": {
+    "displayName": "みなとデジタル チームのプラグイン"
+  },
+  "plugins": [
+    {
+      "name": "minato-sier",
+      "source": {
+        "source": "local",
+        "path": "./plugins/minato-sier"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
