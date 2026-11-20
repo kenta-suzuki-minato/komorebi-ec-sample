@@ -3,6 +3,12 @@ import { order, productLine, wrapLine } from '../testOrders';
 import { renderOrderConfirmationMail } from './orderConfirmation';
 
 describe('renderOrderConfirmationMail', () => {
+  it('空注文の合計と10%対象額・消費税を0円で表示する', () => {
+    const body = renderOrderConfirmationMail(order([]));
+    expect(body).toContain('合計　0円（うち消費税 0円）');
+    expect(body).toContain('10%対象 0円（消費税 0円）');
+  });
+
   it('BT-350＋包装：合計3,650円（うち消費税 331円）', () => {
     const bottle = productLine('BT-350', 'ぬくもりボトル 350ml', 1, 3300);
     const body = renderOrderConfirmationMail(order([bottle, wrapLine(bottle)]));
