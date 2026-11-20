@@ -22,3 +22,12 @@ export interface OrderRecord {
   lines: OrderLineRecord[];
   noshi?: { omotegaki: string };
 }
+
+export interface PointsHistoryResponse {
+  balance: number;
+  expiresOn: string | null;
+  history: readonly {
+    kind: 'grant' | 'use' | 'expire';
+    points: number;
+  }[];
+}

@@ -20,9 +20,13 @@ export function calcUsablePoints(balance: number, requested: number, payableAmou
   return Math.min(requested, balance, payableAmount);
 }
 
-/** ポイントの有効期限：最後に購入した日から1年間。"YYYY-MM-DD" で返す */
-export function calcPointExpiryDate(lastPurchasedAt: Date): string {
-  const expiry = new Date(lastPurchasedAt.getTime());
+const purchaseDateFormatter = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Asia/Tokyo' });
+
+/** 日本時間の購入日から1年後を返す。翌年に同じ日付がない場合は未確定。 */
+export function calcPointExpiryDate(lastPurchasedAt: Date): string | null {
+  const purchaseDate = purchaseDateFormatter.format(lastPurchasedAt);
+  const expiry = new Date(`${purchaseDate}T00:00:00Z`);
   expiry.setUTCFullYear(expiry.getUTCFullYear() + 1);
-  return expiry.toISOString().slice(0, 10);
+  const expiryDate = expiry.toISOString().slice(0, 10);
+  return expiryDate.slice(5) === purchaseDate.slice(5) ? expiryDate : null;
 }

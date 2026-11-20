@@ -25,11 +25,10 @@ export function findExpiringMembers(
 
   return members
     .filter((member) => member.balance > 0)
-    .map((member) => ({
-      memberId: member.memberId,
-      balance: member.balance,
-      expiresOn: calcPointExpiryDate(member.lastPurchasedAt),
-    }))
+    .flatMap((member) => {
+      const expiresOn = calcPointExpiryDate(member.lastPurchasedAt);
+      return expiresOn === null ? [] : [{ memberId: member.memberId, balance: member.balance, expiresOn }];
+    })
     .filter((member) => member.expiresOn >= today && member.expiresOn <= limitText)
     .sort((a, b) => a.expiresOn.localeCompare(b.expiresOn));
 }
