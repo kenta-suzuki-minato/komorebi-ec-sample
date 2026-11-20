@@ -1,0 +1,37 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["screen_set", "cases", "uncovered_viewpoints"],
+  "properties": {
+    "screen_set": { "type": "string" },
+    "cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "viewpoint_id", "major", "minor",
+                     "precondition", "steps", "expected",
+                     "automation", "spec_ref"],
+        "properties": {
+          "id": { "type": "string" },
+          "viewpoint_id": { "type": "string" },
+          "major": {
+            "type": "string",
+            "enum": ["カート確認", "お届け先と支払い方法",
+                     "確認", "画面間の移動"]
+          },
+          "minor": { "type": "string" },
+          "precondition": { "type": "string" },
+          "steps": { "type": "array", "items": { "type": "string" } },
+          "expected": { "type": "string" },
+          "automation": { "type": "string",
+                          "enum": ["e2e", "unit", "manual"] },
+          "spec_ref": { "type": "string" }
+        }
+      }
+    },
+    "uncovered_viewpoints": {
+      "type": "array", "items": { "type": "string" }
+    }
+  }
+}

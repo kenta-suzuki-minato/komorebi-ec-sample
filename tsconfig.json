@@ -18,6 +18,7 @@
     "packages/*/src",
     "packages/*/test",
     "batch/src",
+    "scripts",
     "test-support",
     "vitest.config.ts",
     "vitest.setup.ts",
