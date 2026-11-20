@@ -1,8 +1,9 @@
+import { NOSHI_OMOTEGAKI } from '@komorebi/domain';
 import { z } from 'zod';
 
 // POST /api/orders のリクエスト（注文確定）
 export const noshiSchema = z.object({
-  omotegaki: z.enum(['無地', '御歳暮', '御年賀', '内祝']),
+  omotegaki: z.enum(NOSHI_OMOTEGAKI),
 });
 
 export const orderItemSchema = z.object({

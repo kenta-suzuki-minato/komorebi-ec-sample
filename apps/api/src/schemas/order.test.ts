@@ -17,6 +17,18 @@ describe('createOrderSchema', () => {
     ).toBe(true);
   });
 
+  it('表書き「御祝」を受け付ける', () => {
+    const result = createOrderSchema.parse({
+      items: [{ productCode: 'MG-01', qty: 1 }],
+      noshi: { omotegaki: '御祝' },
+    });
+    expect(result.noshi?.omotegaki).toBe('御祝');
+  });
+
+  it('のしを省略できる', () => {
+    expect(createOrderSchema.parse({ items: [{ productCode: 'MG-01', qty: 1 }] }).noshi).toBeUndefined();
+  });
+
   it('一覧にない表書きはエラー', () => {
     const result = createOrderSchema.safeParse({
       items: [{ productCode: 'MG-01', qty: 1 }],

@@ -17,10 +17,10 @@ describe('renderOrderConfirmationMail', () => {
     expect(body).toContain('ご注文番号：KS-20261110-0001');
   });
 
-  it('のしがあれば表書きを書く', () => {
+  it.each(['御歳暮', '御祝'])('のしがあれば表書き「%s」を書く', (omotegaki) => {
     const mug = productLine('MG-01', '木のマグカップ', 1, 2640);
-    const body = renderOrderConfirmationMail(order([mug, wrapLine(mug)], { noshi: { omotegaki: '御歳暮' } }));
-    expect(body).toContain('のし：御歳暮');
+    const body = renderOrderConfirmationMail(order([mug, wrapLine(mug)], { noshi: { omotegaki } }));
+    expect(body).toContain(`のし：${omotegaki}`);
   });
 
   it('のしがなければ「のし」の行はない', () => {

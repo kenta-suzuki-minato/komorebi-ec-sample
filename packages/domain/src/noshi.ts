@@ -1,6 +1,8 @@
-// のし（KEC-13）。表書きは4種（技術設計書 3.3）。名入れは今回の範囲外。
+// のし（KEC-13）。表書きは技術設計書 3.3 を参照。
 
-export type NoshiOmotegaki = '無地' | '御歳暮' | '御年賀' | '内祝';
+export const NOSHI_OMOTEGAKI = ['無地', '御歳暮', '御年賀', '内祝', '御祝'] as const;
+
+export type NoshiOmotegaki = (typeof NOSHI_OMOTEGAKI)[number];
 
 export interface NoshiOption {
   omotegaki: NoshiOmotegaki;

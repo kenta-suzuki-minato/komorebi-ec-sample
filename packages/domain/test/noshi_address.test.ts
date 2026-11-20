@@ -3,6 +3,10 @@ import { normalizePhoneNumber, normalizePostalCode } from '../src/address';
 import { noshiLabel } from '../src/noshi';
 
 describe('noshiLabel', () => {
+  it('[TC-NOSHI-001] 表書き「御祝」を表示する', () => {
+    expect(noshiLabel({ omotegaki: '御祝' })).toBe('のし（御祝）');
+  });
+
   it.each(['無地', '御歳暮', '御年賀', '内祝'] as const)('表書き「%s」', (omotegaki) => {
     expect(noshiLabel({ omotegaki })).toBe(`のし（${omotegaki}）`);
   });
