@@ -1,0 +1,30 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["summary", "failed_step", "root_cause", "evidence",
+               "fix_kind", "files_to_change", "needs_human"],
+  "properties": {
+    "summary": { "type": "string" },
+    "failed_step": { "type": "string" },
+    "root_cause": { "type": "string" },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["file", "detail"],
+        "properties": {
+          "file": { "type": "string" },
+          "detail": { "type": "string" }
+        }
+      }
+    },
+    "fix_kind": {
+      "type": "string",
+      "enum": ["lockfile_update", "code_change", "test_change",
+               "config_change", "flaky_or_infra", "unknown"]
+    },
+    "files_to_change": { "type": "array", "items": { "type": "string" } },
+    "needs_human": { "type": "boolean" }
+  }
+}
