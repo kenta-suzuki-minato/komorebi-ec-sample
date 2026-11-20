@@ -56,7 +56,7 @@ describe('normalizePostalCode（全角・記号のゆれ）', () => {
   ];
   variants.forEach(([input, note], index) => {
     const id = `TC-ADR-${String(index + 1).padStart(2, '0')}`;
-    it.fails(`[${id}][B8] ${note}「${input}」→ 123-4567`, () => {
+    it(`[${id}][B8] ${note}「${input}」→ 123-4567`, () => {
       expect(normalizePostalCode(input)).toBe('123-4567');
     });
   });
@@ -74,7 +74,7 @@ describe('normalizePhoneNumber（全角・記号のゆれ）', () => {
   ];
   variants.forEach(([input, note], index) => {
     const id = `TC-ADR-${String(index + 11).padStart(2, '0')}`;
-    it.fails(`[${id}][B8] ${note}「${input}」→ 0450003127`, () => {
+    it(`[${id}][B8] ${note}「${input}」→ 0450003127`, () => {
       expect(normalizePhoneNumber(input)).toBe('0450003127');
     });
   });
