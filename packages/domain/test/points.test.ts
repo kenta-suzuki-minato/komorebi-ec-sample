@@ -18,7 +18,7 @@ describe('calcEarnedPoints', () => {
     expect(calcEarnedPoints([product(1760)])).toBe(17);
   });
 
-  it('[TC-PT-006] 送料にはポイントがつかない', () => {
+  it('[TC-PT-006][技術設計書 3.4] 送料にはポイントがつかない', () => {
     expect(calcEarnedPoints([product(3300), shipping(550)])).toBe(33);
   });
 
@@ -76,15 +76,13 @@ describe('calcPointExpiryDate（日本時間で判定する）', () => {
   });
 });
 
-// 要件定義書 3.4 との違い（金額計算の回帰テスト KEC-22 で見つかったもの）。
-// it.fails は「いまは失敗する」ことを確かめるテスト。直したら it に戻す。
-describe('calcEarnedPoints（要件定義書 3.4）', () => {
-  it.fails('[TC-PT-004][B2] BT-350＋包装：ギフト包装料にはポイントがつかない（33ポイント）', () => {
+describe('calcEarnedPoints（技術設計書 3.4）', () => {
+  it('[TC-PT-004][技術設計書 3.4] BT-350＋包装：ギフト包装料にはポイントがつかない（33ポイント）', () => {
     const lines: PricedLine[] = [product(3300), { lineType: 'gift_wrap', amount: 350, taxRate: 0.1 }];
     expect(calcEarnedPoints(lines)).toBe(33);
   });
 
-  it.fails('[TC-PT-005][B3] 保存容器S＋L（2明細、2,310円）は23ポイント（端数は注文ごとに切り捨て）', () => {
+  it('[TC-PT-005][技術設計書 3.4] 保存容器S＋L（2明細、2,310円）は23ポイント（端数は注文全体で1回だけ切り捨て）', () => {
     expect(calcEarnedPoints([product(880), product(1430)])).toBe(23);
   });
 });
