@@ -1,0 +1,30 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "apply_patch|Bash",
+        "hooks": [
+          { "type": "command", "command": "node .codex/hooks/tdd-guard.mjs pre",
+            "timeout": 30, "statusMessage": "TDDの段階を確認しています" }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "apply_patch",
+        "hooks": [
+          { "type": "command", "command": "node .codex/hooks/tdd-guard.mjs post",
+            "timeout": 300, "statusMessage": "編集のあとにテストを実行しています" }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          { "type": "command", "command": "node .codex/hooks/tdd-guard.mjs stop",
+            "timeout": 300, "statusMessage": "終了前にテストを実行しています" }
+        ]
+      }
+    ]
+  }
+}

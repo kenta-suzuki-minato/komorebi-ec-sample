@@ -6,9 +6,10 @@ export const POINT_UNIT_YEN = 100;
 
 /** 出荷時に付与するポイント数 */
 export function calcEarnedPoints(lines: readonly PricedLine[]): number {
-  return lines
-    .filter((line) => line.lineType !== 'shipping')
-    .reduce((points, line) => points + Math.floor(line.amount / POINT_UNIT_YEN), 0);
+  const productTotal = lines
+    .filter((line) => line.lineType === 'product')
+    .reduce((total, line) => total + line.amount, 0);
+  return Math.floor(productTotal / POINT_UNIT_YEN);
 }
 
 /**
