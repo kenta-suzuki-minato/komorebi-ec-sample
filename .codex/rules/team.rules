@@ -1,0 +1,12 @@
+# チームの推奨の規則（AIツール利用ルール v0.1 のルール3）
+prefix_rule(
+    pattern = ["git", "push", ["--force", "-f", "--force-with-lease"]],
+    decision = "forbidden",
+    justification = "force pushは禁止です。git revertで取り消してください（ルール3）",
+)
+
+prefix_rule(
+    pattern = ["git", "push"],
+    decision = "prompt",
+    justification = "pushの前に、差分を人が確認します（ルール3）",
+)

@@ -19,3 +19,32 @@ AIのコーディング支援ツールを使うときのルール案です。
 
 - ツールの設定（読ませないファイル、実行してよいコマンド）をチームでそろえる方法
 - お客様（こもれびリビング様）の了承：清水さんが11月中に定例で相談予定
+
+## 別紙 技術的な担保（v0.1）
+
+Windows 版 Codex の管理設定 `C:\ProgramData\OpenAI\Codex\requirements.toml` と、ルール2・3の対応を以下に示します。
+
+| 設定 | 対応するルール | 設定で担保する範囲 |
+|---|---|---|
+| `allowed_approval_policies = ["on-request"]` | 2・3 | サンドボックスの範囲外の操作を実行する際に承認を求める。承認ポリシーは `on-request` に限定する。 |
+| `allowed_approvals_reviewers = ["user", "auto_review"]` | 2・3 | 承認の審査先をユーザーと自動審査に限定する。push 前の差分確認は担当者が行う。 |
+| `default_permissions = "minato_workspace"` | 2 | チーム標準の除外設定を持つ `minato_workspace` を既定にする。 |
+| `[allowed_permission_profiles]` の `:read-only` と `minato_workspace` | 2 | 選択可能な権限プロファイルを2つに限定し、フルアクセスを許可しない。 |
+| `[permissions.minato_workspace]` の `description` と `extends = ":workspace"` | 2 | 説明文で除外の目的を示し、ワークスペース用プロファイルを継承した上で、下記の除外を適用する。 |
+| `glob_scan_max_depth = 3` | 2 | ワークスペースでの除外パターンの探索深度を3に設定する。 |
+| `[permissions.minato_workspace.filesystem.":workspace_roots"]` の `**/.env`、`**/.env.local`、`data` に対する `deny` | 2 | `minato_workspace` 使用時に、探索範囲内の `.env`・`.env.local` とワークスペース直下の `data` へのアクセスを拒否する。 |
+| `[permissions.filesystem]` の `deny_read = ["~/.ssh", "~/.aws"]` | 2 | 権限プロファイルにかかわらず、ホームのSSH鍵やAWS認証情報が置かれるディレクトリの読み取りを禁止する。 |
+| 空の `[mcp_servers]` | 2 | MCPサーバーを承認済みのものに限定する。v0.1の承認済みサーバーは0件。 |
+| `[windows]` の `allowed_sandbox_implementations = ["elevated"]` | 2 | 読み取り禁止が効く `elevated` に限定する。 |
+| `[rules]` の `prefix_rules`（force push は `forbidden`） | 3 | 設定のパターンに一致する force push（`--force`、`-f`、`--force-with-lease`）を禁止する。取り消しが必要な場合は `git revert` を使う。 |
+| `[rules]` の `prefix_rules`（`git push` は `prompt`） | 3 | `git push` の前に承認を求める。担当者は差分を確認してから push を許可する。 |
+
+ルール2に従い、利用前に選択中のプロファイルと除外範囲を確認する。対象外のファイルに含まれる個人情報や認証情報も、AIツールへの入力や添付に含めない。ルール3に従い、PRでは通常どおりレビューし、業務ルールに関わる変更を要件と照合する。
+
+### ルール1・4・5の運用
+
+| ルール | 運用方法 |
+|---|---|
+| 1. お客様の了承 | 案件担当者がAIツールの利用前にお客様の了承を取り、対象のコード・資料と利用範囲を案件の記録に残す。了承を確認できた範囲で使う。 |
+| 4. PRへの記載 | PR作成者が、AIツールを使った箇所をPRの説明に一言書く。テストだけに使った場合も記載する（例「AIツールを使った箇所は注文金額の単体テストです」）。レビュアーは記載を確認する。 |
+| 5. 月1回の共有 | 開発チームの定例で月1回、AIツールを使って困ったこととうまくいったことを共有する。議事録に要点を残す。 |
