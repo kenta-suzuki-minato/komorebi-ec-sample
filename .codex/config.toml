@@ -1,0 +1,14 @@
+default_permissions = "minato-dev"
+
+[permissions.minato-dev]
+description = "komorebi-ec用：ワークスペースに書き込み可。秘密情報と個人情報は読ませない"
+extends = ":workspace"
+
+[permissions.minato-dev.filesystem]
+glob_scan_max_depth = 3
+
+[permissions.minato-dev.filesystem.":workspace_roots"]
+"**/.env" = "deny"
+"**/.env.local" = "deny"
+"data" = "deny"
+"legacy/old-shop/config.php" = "deny"
