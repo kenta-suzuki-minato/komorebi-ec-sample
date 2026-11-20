@@ -1,0 +1,30 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["sites", "notes"],
+  "properties": {
+    "sites": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["file", "line", "function", "kind", "rounding",
+                     "per_order", "tax_rate_literal", "evidence"],
+        "properties": {
+          "file": { "type": "string" },
+          "line": { "type": "integer" },
+          "function": { "type": "string" },
+          "kind": { "type": "string", "enum": ["計算", "表示", "テスト"] },
+          "rounding": {
+            "type": "string",
+            "enum": ["切り捨て", "四捨五入", "切り上げ", "なし", "不明"]
+          },
+          "per_order": { "type": "boolean" },
+          "tax_rate_literal": { "type": "boolean" },
+          "evidence": { "type": "string" }
+        }
+      }
+    },
+    "notes": { "type": "string" }
+  }
+}
