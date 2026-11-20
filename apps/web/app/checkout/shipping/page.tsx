@@ -4,17 +4,17 @@ import { useRouter } from 'next/navigation';
 import { useState, type ChangeEvent } from 'react';
 import type { NoshiOmotegaki } from '@komorebi/domain';
 import { NOSHI_NONE_LABEL, NOSHI_OPTIONS } from '../../../src/lib/noshiOptions';
-import { EMPTY_DELIVERY, isDeliveryComplete, PAYMENT_METHODS, type DeliveryForm, type PaymentMethod } from '../../../src/lib/checkout';
+import { isDeliveryComplete, PAYMENT_METHODS, type DeliveryForm, type PaymentMethod } from '../../../src/lib/checkout';
 import { CheckoutSteps } from '../../_components/CheckoutSteps';
 import { useStore } from '../../_components/StoreProvider';
 import { CHECKOUT_STEPS } from '../steps';
 
 // お届け先と支払い方法（旧：お届け先、お支払い方法の2画面）
 export default function ShippingPage() {
-  const { setDelivery, noshi, setNoshi, setPayment } = useStore();
+  const { delivery, setDelivery, noshi, setNoshi, payment: savedPayment, setPayment } = useStore();
   const router = useRouter();
-  const [form, setForm] = useState<DeliveryForm>(EMPTY_DELIVERY);
-  const [payment, setPaymentMethod] = useState<PaymentMethod | ''>('');
+  const [form, setForm] = useState<DeliveryForm>(delivery);
+  const [payment, setPaymentMethod] = useState<PaymentMethod | ''>(savedPayment);
 
   const update = (key: keyof DeliveryForm) => (event: ChangeEvent<HTMLInputElement>) =>
     setForm({ ...form, [key]: event.target.value });
