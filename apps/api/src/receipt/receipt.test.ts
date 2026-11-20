@@ -3,6 +3,12 @@ import { order, productLine, wrapLine } from '../testOrders';
 import { buildReceipt } from './receipt';
 
 describe('buildReceipt', () => {
+  it('空注文の合計と10%対象額・消費税を0円で表示する', () => {
+    const receipt = buildReceipt(order([]), '〔お客様〕');
+    expect(receipt.totalLabel).toBe('0円');
+    expect(receipt.taxRows).toEqual([{ label: '10%対象', taxable: '0円', tax: '0円' }]);
+  });
+
   it('BT-350＋包装：10%対象 3,650円、消費税 331円', () => {
     const bottle = productLine('BT-350', 'ぬくもりボトル 350ml', 1, 3300);
     const receipt = buildReceipt(order([bottle, wrapLine(bottle)]), '〔お客様〕');
