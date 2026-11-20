@@ -44,6 +44,11 @@ describe('calcOrderTotals', () => {
     expect(calcOrderTotals([product(8910)]).taxTotal).toBeYen(810);
   });
 
+  it.todo('[TC-TAX-009] クーポン500円引き＋包装1点：税込3,650円から500円を引いた3,150円の消費税は286円');
+  it.todo('[TC-TAX-010] クーポン500円引き＋保存容器S・M・Lをそれぞれ包装：税込4,460円から500円を引いた3,960円の消費税は360円');
+  it.todo('[TC-TAX-011] クーポン500円引き＋リネンふきん2点・包装2点（1明細）：税込4,000円から500円を引いた3,500円の消費税は318円');
+  it.todo('[TC-TAX-012] クーポン500円引き＋リネンふきん1点・包装1点を2明細：税込4,000円から500円を引いた3,500円の消費税は318円');
+
   it('明細がなければ合計も消費税も0円', () => {
     const totals = calcOrderTotals([]);
     expect(totals.total).toBeYen(0);
