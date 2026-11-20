@@ -16,6 +16,9 @@ const pool = new pg.Pool({
 const db = drizzle(pool, { schema, logger: process.env.LOG_SQL === '1' });
 const port = Number(process.env.API_PORT ?? 8787);
 
-serve({ fetch: createApp(db).fetch, port }, (info) => {
+const enableLocalAdmin = process.env.ENABLE_LOCAL_ADMIN === '1';
+const hostname = enableLocalAdmin ? '127.0.0.1' : undefined;
+
+serve({ fetch: createApp(db, { enableLocalAdmin }).fetch, port, hostname }, (info) => {
   console.log(`API: http://localhost:${info.port}`);
 });

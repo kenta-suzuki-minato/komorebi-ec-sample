@@ -1,4 +1,13 @@
-import { integer, pgTable, primaryKey, text } from 'drizzle-orm/pg-core';
+import { integer, numeric, pgTable, primaryKey, text, timestamp, uuid } from 'drizzle-orm/pg-core';
+
+export const orders = pgTable('orders', {
+  id: uuid('id').primaryKey(),
+  orderNo: text('order_no').notNull().unique(),
+  memberId: uuid('member_id'),
+  orderedAt: timestamp('ordered_at', { withTimezone: true }).notNull(),
+  status: text('status').notNull(),
+  totalInclTax: numeric('total_incl_tax', { precision: 12, scale: 0 }).notNull(),
+});
 
 // Drizzle のテーブル定義（migrations/*.sql と同じ形）
 export const products = pgTable('products', {
