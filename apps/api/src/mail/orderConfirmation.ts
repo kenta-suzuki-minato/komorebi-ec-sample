@@ -1,8 +1,6 @@
 import { calcOrderTotals, formatYen } from '@komorebi/domain';
-import Mustache from 'mustache';
 import { toPricedLines } from '../orderLines';
 import type { OrderRecord } from '../types';
-import { ORDER_CONFIRMATION_TEMPLATE } from './orderConfirmationTemplate';
 
 const STANDARD_RATE = 0.1;
 
@@ -19,18 +17,24 @@ export function renderOrderConfirmationMail(order: OrderRecord): string {
     .filter((line) => line.taxRateCode === 'standard')
     .reduce((sum, line) => sum + Number(line.amountInclTax), 0);
 
-  return Mustache.render(ORDER_CONFIRMATION_TEMPLATE, {
-    customerName: order.customerName,
-    orderNo: order.orderNo,
-    lines: order.lines.map((line) => ({
-      name: line.name,
-      qty: line.qty,
-      amount: formatYen(Number(line.amountInclTax)),
-    })),
-    total: formatYen(totals.total),
-    taxTotal: formatYen(totals.taxTotal),
-    standardAmount: formatYen(standardAmount),
-    standardTax: formatYen(taxOfIncluded(standardAmount, STANDARD_RATE)),
-    noshi: order.noshi ?? false,
-  });
+  const lines = order.lines.map(
+    (line) => `・${line.name} × ${line.qty}　${formatYen(Number(line.amountInclTax))}`,
+  );
+
+  return [
+    `${order.customerName} 様`,
+    '',
+    'こもれびストアをご利用いただき、ありがとうございます。',
+    '以下の内容でご注文を承りました。',
+    '',
+    `ご注文番号：${order.orderNo}`,
+    '',
+    ...lines,
+    '',
+    `合計　${formatYen(totals.total)}（うち消費税 ${formatYen(totals.taxTotal)}）`,
+    `　10%対象 ${formatYen(standardAmount)}（消費税 ${formatYen(taxOfIncluded(standardAmount, STANDARD_RATE))}）`,
+    ...(order.noshi ? ['', `のし：${order.noshi.omotegaki}`] : []),
+    '',
+    'こもれびリビング',
+  ].join('\n');
 }
