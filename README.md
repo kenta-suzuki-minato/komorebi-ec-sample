@@ -19,12 +19,25 @@ AIコーディングエージェントの使い方を学ぶ書籍の練習用で
 
 ## セットアップ
 
+`pnpm install` の前に、リポジトリ直下の [`.node-version`](.node-version) に指定された Node.js（現在は 22 系）をインストールし、使用するシェルでそのバージョンに切り替えます。たとえば、セットアップ済みの `fnm` を使う場合は PowerShell で次を実行します。
+
+```powershell
+$nodeVersion = (Get-Content .node-version -Raw).Trim()
+fnm install $nodeVersion
+fnm use $nodeVersion
+node --version
+```
+
+`node --version` が `.node-version` の指定に合っていることを確認してから進みます。指定範囲外の Node.js では、`.npmrc` の `engine-strict=true` により `pnpm install` が `Unsupported engine` で止まります。
+
 ```console
 pnpm install
 pnpm test
 ```
 
 APIを動かすときは、PostgreSQL を Docker で起動してからデータを入れます。
+
+PostgreSQL のホスト側ポートは既定で `5432` です。別のコンテナやプロセスが `5432` を使っていると、`docker compose up -d db` は `port is already allocated` で止まります。その場合は、下の手順で `.env` を作成したあと、DB を起動する前に `.env` の `DB_PORT` を空いているポート（例 `DB_PORT=5433`）に設定してください。すでに `.env` がある場合は、そのファイルを編集します。Compose の公開ポートと、API・マイグレーション・シードの接続先には同じ `DB_PORT` が使われます。
 
 ```console
 cp .env.example .env
