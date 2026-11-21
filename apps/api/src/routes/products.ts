@@ -1,5 +1,5 @@
 import { schema } from '@komorebi/db';
-import { asc, eq } from 'drizzle-orm';
+import { and, asc, eq, inArray } from 'drizzle-orm';
 import { Hono } from 'hono';
 import type { Db } from '../db';
 
@@ -25,22 +25,42 @@ export function productRoutes(db: Db) {
       .where(category ? eq(products.category, category) : undefined)
       .orderBy(asc(products.code));
 
-    const items: ProductListItem[] = [];
-    for (const product of rows) {
-      const stocks = await db.select().from(inventory).where(eq(inventory.productCode, product.code));
-      const images = await db.select().from(productImages).where(eq(productImages.productCode, product.code));
-      items.push({
-        code: product.code,
-        name: product.name,
-        category: product.category,
-        price: product.priceInclTax,
-        colors: stocks.map((stock) => ({
-          color: stock.color,
-          stock: stock.stock,
-          image: images.find((image) => image.color === stock.color && image.width === 400)?.url ?? null,
-        })),
+    if (rows.length === 0) return c.json({ items: [] });
+
+    const productCodes = rows.map((product) => product.code);
+    const stockRows = await db
+      .select({
+        productCode: inventory.productCode,
+        color: inventory.color,
+        stock: inventory.stock,
+        image: productImages.url,
+      })
+      .from(inventory)
+      .leftJoin(
+        productImages,
+        and(
+          eq(productImages.productCode, inventory.productCode),
+          eq(productImages.color, inventory.color),
+          eq(productImages.width, 400),
+        ),
+      )
+      .where(inArray(inventory.productCode, productCodes));
+
+    const colorsByProduct = new Map(rows.map(({ code }) => [code, [] as ProductListItem['colors']]));
+    for (const { productCode, color, stock, image } of stockRows) {
+      colorsByProduct.get(productCode)?.push({
+        color,
+        stock,
+        image,
       });
     }
+    const items: ProductListItem[] = rows.map((product) => ({
+      code: product.code,
+      name: product.name,
+      category: product.category,
+      price: product.priceInclTax,
+      colors: colorsByProduct.get(product.code) ?? [],
+    }));
     return c.json({ items });
   });
 
